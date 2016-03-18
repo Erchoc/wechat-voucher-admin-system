@@ -1,5 +1,13 @@
 ﻿//配置文件
 module.exports = {
     port: 3000,  //node启动端口
-    dbString:'mysql://ss262:smartac_ss262@172.16.0.59/ssv262?pool=true'   //数据库连接字符串
+    dbString: 'mysql://root:123456@139.196.203.14/wechat?pool=true',   //数据库连接字符串
+    redis: {
+        port: 6379,          // Redis port
+        host: '139.196.203.14'
+    },
+    //微信接口调用地址
+    wechatRoute: {
+        getToken:'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx103bde15086b3bb2&secret=d4624c36b6795d1d99dcf0547af5443d'
+    }
 }
