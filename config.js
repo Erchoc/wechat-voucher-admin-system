@@ -8,6 +8,11 @@ module.exports = {
     },
     //微信接口调用地址
     wechatRoute: {
-        getToken:'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx103bde15086b3bb2&secret=d4624c36b6795d1d99dcf0547af5443d'
+        //获取token地址
+        getToken: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx103bde15086b3bb2&secret=d4624c36b6795d1d99dcf0547af5443d',
+        //获取粉丝列表地址
+        getFans: 'https://api.weixin.qq.com/cgi-bin/user/get?access_token={0}&next_openid={1}',
+        //获取粉丝资料信息地址
+        getFansInfo: 'https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN'
     }
 }

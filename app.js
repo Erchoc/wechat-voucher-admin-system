@@ -5,7 +5,8 @@ var fs = require('fs');
 var path = require('path')
 var Promise = require('bluebird');        //异步流程控制
 var autoroute = require('express-autoroute');   //自动路由第三方包
-var request = require('request');
+var request = Promise.promisify(require("request"));
+var common = require('./common/common.js');
 //加载配置项
 var conf = require('./config.js');
 var Redis = require('ioredis');
@@ -48,23 +49,14 @@ function init() {
             return loadModel(db, path.join(__dirname , 'model', model));
         }).then(function () {
             console.log('加载model成功');
+            //3.初始化时，要先拉取一遍粉丝列表
+            var Fans = require('./lib/fans.js');
+            var fans = new Fans();
+            fans.getFans(0, '');
         }).catch(function (err) {
             console.error(err);
         })
     });
-    
-    //3.系统首次启动时，先判断redis是否存在token,若不存在则获取token并保存
-    redis.get('token')
-    .then(function (token) {
-        if (!token) {
-            request(conf.wechatRoute.getToken, function (err, response, body) {
-                if (err) { return console.error('初始化token错误:' + err); }
-                //微信token为7200过期，这里设置了7000以防万一
-                redis.setex('token', 7000, JSON.parse(body).access_token);
-            })
-        }
-    })
-    
 }
 
 /**
@@ -81,4 +73,6 @@ function loadModel(db, model) {
             resolve();
         })
     })
-}                 
+}
+
+   
