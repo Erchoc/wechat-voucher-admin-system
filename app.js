@@ -53,15 +53,13 @@ function init() {
             var Fans = require('./lib/fans.js');
             var fans = new Fans();
             fans.getFans(0, '');
+            
         }).catch(function (err) {
             console.error(err);
         })
     });
 }
 
-var Card = require('./lib/card.js');
-var card = new Card();
-card.getCardInfo('pBBJMwNI5TWb_cN69bC4N8wB1gGw').then();
 /**
  *  加载model进内存
  **/
