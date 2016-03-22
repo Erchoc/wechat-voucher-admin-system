@@ -22,6 +22,8 @@ module.exports = {
         //根据卡券状态获取卡券列表
         getCardList: 'https://api.weixin.qq.com/card/batchget?access_token={0}',
         //获得api_ticket
-        getTicket: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=wx_card'
+        getTicket: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=wx_card',
+        //发放卡券地址
+        grantCard: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}'
     }
 }
