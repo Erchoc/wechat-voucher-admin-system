@@ -49,11 +49,8 @@ function init() {
             return loadModel(db, path.join(__dirname , 'model', model));
         }).then(function () {
             console.log('加载model成功');
-            //3.初始化时，要先拉取一遍粉丝列表 
-            var Fans = require('./lib/fans.js');
-            var fans = new Fans();
-            fans.getFans(0, '');
-            
+            //3.初始化时，开启job
+            var job = require('./common/schedule.js');
         }).catch(function (err) {
             console.error(err);
         })
