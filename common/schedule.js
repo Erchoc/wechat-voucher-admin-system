@@ -14,7 +14,7 @@ var ruleFans = new schedule.RecurrenceRule();
 ruleFans.dayOfWeek = [0, new schedule.Range(1, 6)];
 ruleFans.hour = 6;
 ruleFans.minute = 0;
-schedule.scheduleJob(ruleFans, function () {
+var fansJob = schedule.scheduleJob(ruleFans, function () {
     SyncFans();
 });
 
@@ -39,8 +39,12 @@ function SyncCard() {
 /**
  *  每个N分钟拉取卡券信息
  **/
-var rule = new schedule.RecurrenceRule();
-rule.minute = conf.syncCardMinute;
-schedule.scheduleJob(rule, function () {
+var ruleCard = new schedule.RecurrenceRule();
+var cardTimes = [];
+for (var i = 0; i < 60; i = i + conf.syncCardMinute) { 
+    cardTimes.push(i);
+}
+ruleCard.minute = cardTimes;
+var cardJob = schedule.scheduleJob(ruleCard, function () {
     SyncCard();
 });
