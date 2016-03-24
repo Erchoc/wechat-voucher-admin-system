@@ -59,3 +59,18 @@ fans.prototype.isExists = function (openid) {
         })
     })
 }
+
+/**
+ *  获取fans列表
+ **/
+fans.prototype.getFansList = function () {
+    return new Promise(function (resolve, reject) {
+        db.models['fansInfo'].find({ subscribe: 1 }, function (err, fans) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(fans);
+        })
+    })
+}

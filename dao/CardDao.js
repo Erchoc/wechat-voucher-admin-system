@@ -87,3 +87,18 @@ Card.prototype.isExists = function (cardid) {
         })
     })
 }
+
+/**
+ *  获取卡券列表
+ **/
+Card.prototype.getCardList = function () {
+    return new Promise(function (resolve, reject) {
+        db.models['card'].find({ status: ['CARD_STATUS_VERIFY_OK','CARD_STATUS_DISPATCH'] }, function (err, cards) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(cards);
+        })
+    })
+}
