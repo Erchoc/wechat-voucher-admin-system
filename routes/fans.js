@@ -18,10 +18,10 @@ module.exports.autoroute = {
 function getFansList(req, res) {
     fans.getFansList()
     .then(function (fans) {
-        res.jsonp(fans);
+        res.jsonp({ status: 200, msgBody: fans });
     })
     .catch(function (err) {
         console.error(err);
-        res.jsonp(err);
+        res.jsonp({ status: -1, msgBody: err });
     })
 }
