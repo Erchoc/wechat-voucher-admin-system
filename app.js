@@ -5,12 +5,15 @@ var fs = require('fs');
 var path = require('path')
 var Promise = require('bluebird');        //异步流程控制
 var autoroute = require('express-autoroute');   //自动路由第三方包
+var bodyParser = require('body-parser');
 var request = Promise.promisify(require("request"));
 var common = require('./common/common.js');
 //加载配置项
 var conf = require('./config.js');
 var Redis = require('ioredis');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 //初始化系统操作
 init();
 //自动加载路由,所有路由文件都放在routes下面

@@ -19,12 +19,12 @@ module.exports = {
         //上传卡券Logo
         uploadLogo: 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token={0}',
         //根据卡券id获取卡券信息
-        getCardInfo: 'https://api.weixin.qq.com/card/get?access_token={0}',
+        getCouponInfo: 'https://api.weixin.qq.com/card/get?access_token={0}',
         //根据卡券状态获取卡券列表
-        getCardList: 'https://api.weixin.qq.com/card/batchget?access_token={0}',
+        getCouponList: 'https://api.weixin.qq.com/card/batchget?access_token={0}',
         //获得api_ticket
         getTicket: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=wx_card',
         //发放卡券地址
-        grantCard: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}'
+        grantCoupon: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}'
     }
 }

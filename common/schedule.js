@@ -31,20 +31,20 @@ function SyncFans() {
  *  同步卡券
  **/
 function SyncCard() {
-    var Card = require('../lib/card.js');
-    var card = new Card();
-    card.getCardList();
+    var Coupon = require('../lib/coupon.js');
+    var coupon = new Coupon();
+    coupon.getCouponList();
 }
 
 /**
  *  每个N分钟拉取卡券信息
  **/
-var ruleCard = new schedule.RecurrenceRule();
-var cardTimes = [];
+var ruleCoupon = new schedule.RecurrenceRule();
+var couponTimes = [];
 for (var i = 0; i < 60; i = i + conf.syncCardMinute) { 
-    cardTimes.push(i);
+    couponTimes.push(i);
 }
-ruleCard.minute = cardTimes;
-var cardJob = schedule.scheduleJob(ruleCard, function () {
+ruleCoupon.minute = couponTimes;
+var couponJob = schedule.scheduleJob(ruleCoupon, function () {
     SyncCard();
 });

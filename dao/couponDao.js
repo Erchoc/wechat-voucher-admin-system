@@ -1,13 +1,13 @@
 ﻿var Promise = require('bluebird');
 //数据操作层
-module.exports = Card = function () { };
+module.exports = Coupon = function () { };
 
 
 /**
  * Logo地址入库
  * param item logo数据(JSON)
  **/
-Card.prototype.insertLogo = function (item) {
+Coupon.prototype.insertLogo = function (item) {
     return new Promise(function (resolve, reject) {
         db.models['logo'].create(item, function (err, item) {
             if (err) {
@@ -22,7 +22,7 @@ Card.prototype.insertLogo = function (item) {
 /**
  *  获取logo列表
  **/
- Card.prototype.logoList = function () {
+ Coupon.prototype.logoList = function () {
     return new Promise(function (resolve, reject) {
         db.models['logo'].find({}, function (err, logos) {
             if (err) {
@@ -38,7 +38,7 @@ Card.prototype.insertLogo = function (item) {
  * 卡券信息入库
  * param item 卡券数据(JSON) 
  **/
-Card.prototype.insertCard = function (item) {
+Coupon.prototype.insertCoupon = function (item) {
     return new Promise(function (resolve, reject) {
         db.models['card'].create(item, function (err, item) {
             if (err) {
@@ -54,7 +54,7 @@ Card.prototype.insertCard = function (item) {
  * 根据cardid判断卡券是否存在
  * param cardid 
  **/
-Card.prototype.isExists = function (cardid) {
+Coupon.prototype.isExists = function (cardid) {
     return new Promise(function (resolve, reject) {
         db.models['card'].exists({ cardid: cardid }, function (err, exists) {
             if (err) {
@@ -70,7 +70,7 @@ Card.prototype.isExists = function (cardid) {
  * 更新卡券数据信息
  * param item 卡券数据(JSON)
  **/
- Card.prototype.updateCard = function (item) {
+ Coupon.prototype.updateCoupon = function (item) {
     return new Promise(function (resolve, reject) {
         db.models['card'].find({ cardid: item.cardid }).each(function (card) {
             card.cardtype = item.cardtype;
@@ -91,7 +91,7 @@ Card.prototype.isExists = function (cardid) {
 /**
  *  获取卡券列表
  **/
-Card.prototype.getCardList = function () {
+Coupon.prototype.getCouponList = function () {
     return new Promise(function (resolve, reject) {
         db.models['card'].find({ status: ['CARD_STATUS_VERIFY_OK','CARD_STATUS_DISPATCH'] }, function (err, cards) {
             if (err) {
