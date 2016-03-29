@@ -1,15 +1,37 @@
 ﻿/**
  * 服务器(用来接收微信推送的事件)
  **/
-
+var Promise = require('bluebird');
+var Fans = require('../lib/fans');
+var fans = new Fans();
 module.exports.autoroute = {
     get: {
         '/server/event'  : signature //用于服务器第一次接入认证
     },
     post: {
-       
+        '/server/event'  : event //用于服务器第一次接入认证
     }
 };
+
+/**
+ * 接收服务器推送事件
+ **/
+function event(req, res) {
+    var xmlData = req.body.xml;
+    switch (xmlData.msgtype) {
+        case 'event':
+            switch (xmlData.event) {
+                case 'subscribe':
+                    fans.fansInfo(xmlData.fromusername);
+                    break;
+                case 'unsubscribe':
+                    fans.unsubscribe(xmlData.fromusername);
+                    break;
+            }
+    }
+   
+}
+
 
 /**
  * 用于服务器第一次接入认证
@@ -21,7 +43,7 @@ function signature(req, res) {
     var echostr = req.query.echostr;
     if (checkSignature(signature, timestamp, nonce)) {
         res.send(echostr);
-    } else { 
+    } else {
         res.send('');
     }
 }
@@ -43,7 +65,7 @@ function checkSignature(signature, timestamp, nonce) {
     str = md5sum.digest('hex');
     if (signature == str) {
         return true;
-    } else { 
+    } else {
         return false;
     }
 }

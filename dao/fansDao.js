@@ -35,6 +35,24 @@ fans.prototype.isExists = function (openid) {
 }
 
 /**
+ * 更新取消关注状态
+ * param openid
+ **/
+fans.prototype.unsubscribe = function (openid) {
+    return new Promise(function (resolve, reject) {
+        db.models['fansInfo'].find({ openid: openid }).each(function (fan) {
+            fan.subscribe = 0;
+        }).save(function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        })
+    })
+}
+
+/**
  * 更新fans数据信息
  * param item 粉丝数据(JSON)
  **/
