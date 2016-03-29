@@ -1,6 +1,6 @@
 ﻿//配置文件
 module.exports = {
-    port: 3000,  //node启动端口
+    port: 80,  //node启动端口
     dbString: 'mysql://root:123456@139.196.203.14/wechat?pool=true',   //数据库连接字符串
     redis: {
         port: 6379,          // Redis port
