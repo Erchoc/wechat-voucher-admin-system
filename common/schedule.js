@@ -11,14 +11,14 @@ SyncCard();
  *  定时拉取粉丝信息(每天6:00)
  **/
 var ruleFans = new schedule.RecurrenceRule();
-//ruleFans.dayOfWeek = [0, new schedule.Range(1, 6)];
-//ruleFans.hour = 6;
-//ruleFans.minute = 0;
-var fansTimes = [];
-for (var j = 0; j < 60; j = j + 1) {
-    fansTimes.push(i);
-}
-ruleFans.minute = fansTimes;
+ruleFans.dayOfWeek = [0, new schedule.Range(1, 6)];
+ruleFans.hour = 6;
+ruleFans.minute = 0;
+//var fansTimes = [];
+//for (var j = 0; j < 60; j = j + 1) {
+//    fansTimes.push(i);
+//}
+//ruleFans.minute = fansTimes;
 var fansJob = schedule.scheduleJob(ruleFans, function () {
     SyncFans();
 });

@@ -89,6 +89,26 @@ Coupon.prototype.isExists = function (cardid) {
 }
 
 /**
+ * 核销后更新卡券数量
+ * param item 卡券数据(JSON)
+ **/
+ Coupon.prototype.updateQuantity = function (cardid) {
+    return new Promise(function (resolve, reject) {
+        db.models['card'].find({ cardid: cardid }).each(function (card) {
+            console.log(JSON.stringify(card));
+            card.quantity = parseInt(card.quantity) - 1;
+            console.log(JSON.stringify(card));
+        }).save(function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        })
+    })
+}
+
+/**
  *  获取卡券列表
  **/
 Coupon.prototype.getCouponList = function () {

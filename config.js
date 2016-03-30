@@ -6,7 +6,7 @@ module.exports = {
         port: 6379,          // Redis port
         host: '139.196.203.14'
     },
-    syncCardMinute: 5, //每隔5MIN同步卡券信息
+    syncCardMinute: 60, //每隔60MIN同步卡券信息
     //微信接口调用地址
     wechatRoute: {
         //获取token地址
