@@ -60,6 +60,22 @@ function init() {
             console.log('加载model成功');
             //3.初始化时，开启job
             var job = require('./common/schedule.js');
+
+            //var obj = {
+            //    button: [
+            //        { type: 'view', name: '开始购票', url: 'http://m.weimob.com/buyer/home?vid=17510014' },
+            //        {
+            //            name: '关于我们',
+            //            sub_button: [
+            //                { type: 'view', name: '官网', url: 'http://139.196.58.233/home' },
+            //                { type: 'click', name: '联系我们', key: 'k001' },
+            //                { type: 'click', name: '使用教程', key: 'k002' },
+            //            ]
+            //        }]
+            //};
+            //var Menu = require('./lib/menu.js');
+            //var menu = new Menu();
+            //menu.createMenu(obj).then();
         }).catch(function (err) {
             console.error(err);
         })
