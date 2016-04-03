@@ -8,7 +8,7 @@ module.exports = fans = function () { };
  **/
 fans.prototype.isExists = function (openid) {
     return new Promise(function (resolve, reject) {
-        db.models['fansInfo'].exists({openid:openid}, function (err, exists) {
+        db.models['fansInfo'].exists({ openid: openid }, function (err, exists) {
             if (err) {
                 reject(err);
                 return;
@@ -58,7 +58,7 @@ fans.prototype.unsubscribe = function (openid) {
  **/
  fans.prototype.update = function (item) {
     return new Promise(function (resolve, reject) {
-        db.models['fansInfo'].find({ openid: item.openid }).each(function (fan) { 
+        db.models['fansInfo'].find({ openid: item.openid }).each(function (fan) {
             fan.nickname = item.nickname;
             fan.sex = item.sex;
             fan.city = item.city;
@@ -68,7 +68,26 @@ fans.prototype.unsubscribe = function (openid) {
             fan.subscribe = item.subscribe;
             fan.subscribe_time = item.subscribe_time;
             fan.groupid = item.groupid;
-        }).save(function (err) { 
+        }).save(function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve();
+        })
+    })
+}
+
+/**
+ * 更新fans位置信息
+ * param item 粉丝数据(JSON)
+ **/
+fans.prototype.updateLocation = function (item) {
+    return new Promise(function (resolve, reject) {
+        db.models['fansInfo'].find({ openid: item.fromusername }).each(function (fan) {
+            fan.location_y = item.location_y;
+            fan.location_x = item.location_x;
+        }).save(function (err) {
             if (err) {
                 reject(err);
                 return;

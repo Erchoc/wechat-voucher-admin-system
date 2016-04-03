@@ -12,7 +12,9 @@ module.exports = function (db, cb) {
         headimgurl: String,
         subscribe: Number,
         subscribe_time: String,
-        groupid: Number
+        groupid: Number,
+        location_x: Number,
+        location_y: Number
     });
     return cb();
 }

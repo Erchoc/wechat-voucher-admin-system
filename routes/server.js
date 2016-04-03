@@ -53,6 +53,17 @@ function event(req, res) {
                     
             }
             break;
+        //地理位置
+        case 'location':
+            fans.updateLocation(xmlData)
+            .then(function () { 
+                console.log('更新地理位置成功');
+            })
+            .catch(function (err) { 
+                console.error('更新地位位置失败:' + err);
+            })
+            break;
+                
         default :
             break;
     }
