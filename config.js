@@ -27,6 +27,8 @@ module.exports = {
         //发放卡券地址
         grantCoupon: 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}',
         //创建菜单
-        createMenu:'https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}'
+        createMenu: 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}',
+        //获取门店列表
+        getShops:'	https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={0}'
     }
 }

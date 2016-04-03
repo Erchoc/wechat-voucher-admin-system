@@ -6,6 +6,7 @@ var conf = require('../config.js');
 //第一次开启时先跑一遍逻辑
 SyncFans();
 SyncCard();
+SyncShop();
 
 /**
  *  定时拉取粉丝信息(每天6:00)
@@ -41,6 +42,12 @@ function SyncCard() {
     coupon.getCouponList();
 }
 
+function SyncShop() {
+    var Shop = require('../lib/shop.js');
+    var shop = new Shop();
+    shop.getShops(0);
+}
+
 /**
  *  每个N分钟拉取卡券信息
  **/
@@ -52,4 +59,17 @@ for (var i = 0; i < 60; i = i + conf.syncCardMinute) {
 ruleCoupon.minute = couponTimes;
 var couponJob = schedule.scheduleJob(ruleCoupon, function () {
     SyncCard();
+});
+
+/**
+ *  每个N分钟拉取门店信息
+ **/
+var ruleShop = new schedule.RecurrenceRule();
+var shopTimes = [];
+for (var i = 0; i < 60; i = i + conf.syncCardMinute) {
+    shopTimes.push(i);
+}
+ruleShop.minute = shopTimes;
+var shopJob = schedule.scheduleJob(ruleShop, function () {
+    SyncShop();
 });
