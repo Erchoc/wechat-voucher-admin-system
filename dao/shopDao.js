@@ -67,15 +67,24 @@ Shop.prototype.isExists = function (poi_id) {
 
 /**
  *  获取门店列表
+ *  param openid 粉丝openid
+ *  param order 排序 {coloum:xxx,type:asc}
  **/
-Shop.prototype.getShopList = function () {
+Shop.prototype.getShopList = function (openid, order) {
     return new Promise(function (resolve, reject) {
-        db.models['shop'].find({ update_status: 0 }, function (err, shops) {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(shops);
+        if (!order) {
+            order = 'distance ASC';
+        } else {
+            order = order.coloum + ' ' + order.type;
+        }
+        var sql = "SELECT t2.latitude,t2.longitude,t2.evaluate,t2.business_name,t2.city,t2.address,t2.`telephone`," 
+                  + "ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((t1.`location_x` * PI() / 180 - t2.`latitude` * PI() / 180) / 2),2) + COS(t1.`location_x` * PI() / 180) * COS(t2.`latitude` * PI() / 180) * POW(" 
+                  + "SIN((t1.`location_Y` * PI() / 180 - t2.`longitude` * PI() / 180) / 2),2)))) AS distance" 
+                  + " FROM `fansInfo` t1,`shop` t2" 
+                  + " WHERE t1.`openid` = '{0}' AND t2.update_status =0 order by {1} ";
+        db.driver.execQuery(sql.format(openid, order), function (err, data) {
+            if (err) return reject(err);
+            resolve(data);
         })
     })
 }

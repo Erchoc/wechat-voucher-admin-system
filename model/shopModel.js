@@ -17,7 +17,8 @@ module.exports = function (db, cb) {
         recommend: String,
         sid: String,
         poi_id: String,
-        update_status: Number
+        update_status: Number,
+        evaluate: Number
     });
     return cb();
 }

@@ -16,7 +16,9 @@ module.exports.autoroute = {
  *  获取门店列表
  **/
 function getShopList(req, res) {
-    shop.getShopList()
+    var openid = req.query.openid;
+    var order = req.query.order;
+    shop.getShopList(openid, order)
     .then(function (shops) {
         res.jsonp({ status: 200, msgBody: shops });
     })
