@@ -30,7 +30,7 @@ function event(req, res) {
                     fans.fansInfo(xmlData.fromusername);
                     break;
                 //上报地理位置
-                case 'location':
+                case 'LOCATION':
                     fans.updateLocation(xmlData)
                     .then(function () {
                         console.log('更新地理位置成功');
