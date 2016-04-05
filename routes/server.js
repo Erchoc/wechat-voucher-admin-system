@@ -29,6 +29,16 @@ function event(req, res) {
                 case 'subscribe':
                     fans.fansInfo(xmlData.fromusername);
                     break;
+                //上报地理位置
+                case 'location':
+                    fans.updateLocation(xmlData)
+                    .then(function () {
+                        console.log('更新地理位置成功');
+                    })
+                    .catch(function (err) {
+                        console.error('更新地位位置失败:' + err);
+                    })
+                    break;
                 //取消关注
                 case 'unsubscribe':
                     fans.unsubscribe(xmlData.fromusername);
@@ -39,7 +49,7 @@ function event(req, res) {
                     .then(function (cardid) {
                         return coupon.updateQuantity(cardid);
                     })
-                    .then(function () { 
+                    .then(function () {
                         console.log('核销成功');
                     })
                     .catch(function (err) {
@@ -53,21 +63,21 @@ function event(req, res) {
                     
             }
             break;
-        //地理位置
-        case 'location':
-            fans.updateLocation(xmlData)
-            .then(function () { 
-                console.log('更新地理位置成功');
-            })
-            .catch(function (err) { 
-                console.error('更新地位位置失败:' + err);
-            })
-            break;
+        ////地理位置
+        //case 'location':
+        //    fans.updateLocation(xmlData)
+        //    .then(function () { 
+        //        console.log('更新地理位置成功');
+        //    })
+        //    .catch(function (err) { 
+        //        console.error('更新地位位置失败:' + err);
+        //    })
+        //    break;
                 
         default :
             break;
     }
-    res.send('');  
+    res.send('');
 }
 
 

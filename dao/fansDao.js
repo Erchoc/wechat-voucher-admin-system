@@ -85,8 +85,8 @@ fans.prototype.unsubscribe = function (openid) {
 fans.prototype.updateLocation = function (item) {
     return new Promise(function (resolve, reject) {
         db.models['fansInfo'].find({ openid: item.fromusername }).each(function (fan) {
-            fan.location_y = item.location_y;
-            fan.location_x = item.location_x;
+            fan.location_y = item.longitude;
+            fan.location_x = item.latitude;
         }).save(function (err) {
             if (err) {
                 reject(err);
