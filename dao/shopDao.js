@@ -75,7 +75,7 @@ Shop.prototype.getShopList = function (openid, order) {
         if (!order) {
             order = 'distance ASC';
         } else {
-            order = order.coloum + ' ' + order.type;
+            order = order.column + ' ' + order.type;
         }
         var sql = "SELECT t2.latitude,t2.longitude,t2.evaluate,t2.business_name,t2.city,t2.address,t2.`telephone`," 
                   + "ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((t1.`location_x` * PI() / 180 - t2.`latitude` * PI() / 180) / 2),2) + COS(t1.`location_x` * PI() / 180) * COS(t2.`latitude` * PI() / 180) * POW(" 
