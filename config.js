@@ -7,6 +7,7 @@ module.exports = {
         host: '139.196.203.14'
     },
     syncCardMinute: 60, //每隔60MIN同步卡券信息
+    redirectShop:'', //跳转门店列表地址
     //微信接口调用地址
     wechatRoute: {
         //获取token地址
@@ -29,6 +30,8 @@ module.exports = {
         //创建菜单
         createMenu: 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}',
         //获取门店列表
-        getShops:'	https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={0}'
+        getShops: 'https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={0}',
+        //code换取openid
+        getOpenid:'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx327344267200ed96&secret=d6670eaece059ad1bc12c5a2ea9a4efd&code={0}&grant_type=authorization_code'
     }
 }
