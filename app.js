@@ -70,6 +70,7 @@ function init() {
             //                { type: 'view', name: '官网', url: 'http://139.196.58.233/home' },
             //                { type: 'click', name: '联系我们', key: 'k001' },
             //                { type: 'click', name: '使用教程', key: 'k002' },
+            //                { type: 'view', name:'查看门店', url:'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx327344267200ed96&redirect_uri=http%3A%2F%2Fweixin.yunccloud.com%3A3002%2Fshop%2FshopCode%2Fquery&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect'}
             //            ]
             //        }]
             //};

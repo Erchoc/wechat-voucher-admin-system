@@ -19,8 +19,11 @@ module.exports.autoroute = {
  **/
 function getOpenid(req, res) {
     var code = req.query.code;
-    shop.getOpenid(code)
+    var Shoplib = require('../lib/shop');
+    var shoplib = new Shoplib();
+    shoplib.getOpenid(code)
     .then(function (openid) { 
+        console.log('换取Openid:' + openid);
         res.redirect(conf.redirectShop + '?openid=' + openid);
     })
     .catch(function (err) { 
