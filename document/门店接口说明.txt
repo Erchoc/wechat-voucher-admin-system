@@ -1,0 +1,70 @@
+门店页面接口
+
+一.流程
+1.当用户点击微信公众号菜单中的查看门店按钮时，会请求服务器后台接口，走Oauth流程获取Openid。
+2.获取openid后，服务器后台会重定向到我们门店的前台页面，并且在url中加上openid参数。
+  例如:http://weixin.yunccloud.com:81/api.html#/?openid=xxxx
+3.前端加载时，首先拿到Openid，其次并将其作为参数请求后台接口，获取门店列表数据。
+4.注意返回的数据msgBody[0].distance如果不存在，说明用户的地理位置信息还没获取到，请用户返回公众号等待5秒后再看
+  （此情况可能出现在用户刚关注，点击查看门店太快所导致，因为用户的粉丝信息需要微信推送。  ）
+
+二.接口说明 
+
+获取门店列表数据:
+请求方式：get
+请求url:  http://139.196.203.14/shop/shopList/query
+请求data: { openid: openid, order: { column: 'distance', type: 'desc' } }
+参数说明:  
+            openid:粉丝的openid
+			order: 排序 (JSON
+               			 column代表需要排序的字段名(distance或者evaluate)  备注:distance为距离排序，evaluate为评价排序
+						 type代表排序类型(desc和asc两种))
+						 
+返回数据说明:
+返回JSON，
+status: 200为正确返回结果,其余的代表失败
+msgBody:返回的数据内容(JSON数组)
+       [
+	      {
+	       photo_list:图片列表  (字符串，需前台转JSON，即为图片列表数组)
+		   latitude: 纬度
+		   longitude:经度
+		   evaluate:评价
+		   business_name:店名
+		   city:城市
+		   address:地址
+		   telephone:电话
+		   distance:距离(KM)
+		  } 
+	   ]
+
+具体如下:
+{
+    "status": 200,
+    "msgBody": [
+        {
+            "photo_list": "[]",
+            "latitude": 31.3097114563,
+            "longitude": 120.600234985,
+            "evaluate": null,
+            "business_name": "新苏天地",
+            "city": "苏州市",
+            "address": "广济南路219号",
+            "telephone": "0512-65899890",
+            "distance": 14
+        },
+        {
+            "photo_list": "[{\"photo_url\":\"http://mmbiz.qpic.cn/mmbiz/6tjxZZQnGWH3rSbXeu2JRVnjFRJCNE9kaLKk9EeClsPHSYwcy2eWq1ib3MazMBHCmRuF2eicbPuiaL3fD0JkwsSpQ/0?wx_fmt=jpeg\"},{\"photo_url\":\"http://mmbiz.qpic.cn/mmbiz/6tjxZZQnGWH3rSbXeu2JRVnjFRJCNE9kaLKk9EeClsPHSYwcy2eWq1ib3MazMBHCmRuF2eicbPuiaL3fD0JkwsSpQ/0?wx_fmt=jpeg\"}]",
+            "latitude": 24.9464149475,
+            "longitude": 102.769035339,
+            "evaluate": 4,
+            "business_name": "云水洗车新亚洲服务店",
+            "city": "昆明市",
+            "address": "彩云北路10588新亚洲体育城3号门旁边",
+            "telephone": "13888195544",
+            "distance": 1896
+        },
+        ...
+    ]
+}
+
