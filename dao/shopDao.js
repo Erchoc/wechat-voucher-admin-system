@@ -50,7 +50,7 @@ Shop.prototype.isExists = function (poi_id) {
             shop.categories = item.categories;
             shop.longitude = item.longitude;
             shop.latitude = item.latitude;
-            shop.photo_list = JSON.stringify(item.photo_list);
+            shop.photo_list = item.photo_list;
             shop.introduction = item.introduction;
             shop.recommend = item.recommend;
             shop.poi_id = item.poi_id;
@@ -77,7 +77,7 @@ Shop.prototype.getShopList = function (openid, order) {
         } else {
             order = order.column + ' ' + order.type;
         }
-        var sql = "SELECT t2.latitude,t2.longitude,t2.evaluate,t2.business_name,t2.city,t2.address,t2.`telephone`," 
+        var sql = "SELECT t2.photo_list,t2.latitude,t2.longitude,t2.evaluate,t2.business_name,t2.city,t2.address,t2.`telephone`," 
                   + "ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((t1.`location_x` * PI() / 180 - t2.`latitude` * PI() / 180) / 2),2) + COS(t1.`location_x` * PI() / 180) * COS(t2.`latitude` * PI() / 180) * POW(" 
                   + "SIN((t1.`location_Y` * PI() / 180 - t2.`longitude` * PI() / 180) / 2),2)))) AS distance" 
                   + " FROM `fansInfo` t1,`shop` t2" 
