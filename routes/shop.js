@@ -24,7 +24,7 @@ function getOpenid(req, res) {
     shoplib.getOpenid(code)
     .then(function (openid) { 
         console.log('换取Openid:' + openid);
-        res.redirect(conf.redirectShop + '?openid=' + openid);
+        res.redirect(conf.redirectShop.format(openid));
     })
     .catch(function (err) { 
         console.error('code换取openid失败:' + err);

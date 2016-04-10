@@ -7,7 +7,7 @@ module.exports = {
         host: '139.196.203.14'
     },
     syncCardMinute: 60, //每隔60MIN同步卡券信息
-    redirectShop:'', //跳转门店列表地址
+    redirectShop:'http://139.196.203.14:81/api.html#/?openid={0}', //跳转门店列表地址
     //微信接口调用地址
     wechatRoute: {
         //获取token地址
