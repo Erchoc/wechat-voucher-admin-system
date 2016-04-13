@@ -3,6 +3,7 @@
 var Promise = require('bluebird');
 var request = Promise.promisify(require("request"));
 var conf = require('../config.js');
+var crypto = require('crypto');
 //字符串格式化
 String.prototype.format = function (args) {
     if (arguments.length > 0) {
@@ -136,3 +137,13 @@ function randomWord(randomFlag, min, max) {
     return str;
 }
 exports.randomWord = randomWord;
+
+/**
+ *  sha1加密算法
+ **/
+function sha1(str) {
+    var sha1 = crypto.createHash('sha1');
+    sha1.update(str);
+    return sha1.digest('hex');
+}
+exports.sha1 = sha1;

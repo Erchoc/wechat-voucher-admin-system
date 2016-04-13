@@ -16,14 +16,22 @@ var Redis = require('ioredis');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(xmlparser({ trim: false, explicitArray: false }));
+//解决跨域
 app.use('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 })
+
 //初始化系统操作
 init();
-//自动加载路由,所有路由文件都放在routes下面
-autoroute(app, { throwErrors: false, routesDir: path.join(__dirname, 'routes') });
+
+//增加权限验证
+app.use('*', authorization, function (req, res, next) {
+    //自动加载路由,所有路由文件都放在routes下面
+    autoroute(app, { throwErrors: false, routesDir: path.join(__dirname, 'routes') });
+    next();
+})
+
 //开启node
 app.listen(conf.port);
 
@@ -99,4 +107,39 @@ function loadModel(db, model) {
     })
 }
 
-   
+/**
+ * 路由验证
+ **/
+function authorization(req, res, next) {
+    var baseUrl = req.baseUrl;
+    //1.判断如果是特例路由，则不用考虑权限认证
+    var isSpecial = conf.specialRouting.indexOf(baseUrl) > -1;
+    if (isSpecial) return next();
+    //2.验证token
+    var token = req.query.token;
+    var jwt = require('json-web-token');
+    jwt.decode(conf.loginSecret, token, function (err, decode) {
+        if (err) return res.jsonp({ status: -1, msgBody: 'token验证失败' });
+        //判断token是否过期
+        if (parseInt(decode.expires) < new Date().valueOf()) return res.jsonp({ status: -1, msgBody: 'token已过期' });
+        var role = decode.role;
+        switch (role) {
+            case 'admin'://管理员账户拥有所有权限
+                next();
+                break;
+            case 'manager'://拥有读写权限
+                var reg = /(query|operation|add|del)$/;
+                if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
+                next();
+                break;
+            case 'reviewer'://拥有读的权限
+                var reg = /query$/;
+                if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
+                next();
+                break;
+            default :
+                return res.jsonp({ status: -1, msgBody: '权限不够' });
+                break;
+        }
+    })
+}

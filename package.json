@@ -10,6 +10,8 @@
     "express-autoroute": "^1.2.4",
     "express-xml-bodyparser": "^0.3.0",
     "ioredis": "^1.15.1",
+    "json-web-token": "^2.0.2",
+    "moment": "^2.12.0",
     "mysql": "^2.10.2",
     "node-schedule": "^1.1.0",
     "orm": "^2.1.30",
