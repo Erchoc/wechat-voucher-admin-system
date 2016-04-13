@@ -12,7 +12,6 @@ module.exports = {
     specialRouting: [
         '/user/login',
         '/server/event',
-        '/server/event',
         '/shop/shopCode/query',
         '/shop/shopList/query'
     ],
