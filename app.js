@@ -16,21 +16,18 @@ var Redis = require('ioredis');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(xmlparser({ trim: false, explicitArray: false }));
-//解决跨域
-app.use('*', function (req, res, next) {
+
+//增加权限验证
+app.use('*', authorization, function (req, res, next) {
+    //解决跨域
     res.header("Access-Control-Allow-Origin", "*");
+    //自动加载路由,所有路由文件都放在routes下面
+    autoroute(app, { throwErrors: false, routesDir: path.join(__dirname, 'routes') });
     next();
 })
 
 //初始化系统操作
 init();
-
-//增加权限验证
-app.use('*', authorization, function (req, res, next) {
-    //自动加载路由,所有路由文件都放在routes下面
-    autoroute(app, { throwErrors: false, routesDir: path.join(__dirname, 'routes') });
-    next();
-})
 
 //开启node
 app.listen(conf.port);
