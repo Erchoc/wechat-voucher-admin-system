@@ -130,6 +130,7 @@ function authorization(req, res, next) {
             jwt.encode(conf.loginSecret, payload, function (err, tokenAgain) {
                 if (err) {
                     console.error('加密失败');
+                    return res.jsonp({ status: -1, msgBody: 'token重新加密失败'});
                 } else {
                     res.setHeader('x-access-token', tokenAgain);
                     //3.判断路由权限
