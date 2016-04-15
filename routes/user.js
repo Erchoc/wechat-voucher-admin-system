@@ -38,7 +38,8 @@ function login(req, res) {
                 if (err) {
                     res.jsonp({ status: -1, msgBody: '加密失败' });
                 } else {
-                    res.jsonp({ status: 200, msgBody: token });
+                    res.setHeader('x-access-token', token);
+                    res.jsonp({ status: 200, msgBody: '登录成功' });
                 }
             });
         } else {

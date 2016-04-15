@@ -9,6 +9,7 @@ var xmlparser = require('express-xml-bodyparser');
 var bodyParser = require('body-parser');
 var request = Promise.promisify(require("request"));
 var common = require('./common/common.js');
+var moment = require('moment');
 //加载配置项
 var conf = require('./config.js');
 var Redis = require('ioredis');
@@ -119,24 +120,52 @@ function authorization(req, res, next) {
         if (err) return res.jsonp({ status: -1, msgBody: 'token验证失败' });
         //判断token是否过期
         if (parseInt(decode.expires) < new Date().valueOf()) return res.jsonp({ status: -1, msgBody: 'token已过期' });
-        var role = decode.role;
-        switch (role) {
-            case 'admin'://管理员账户拥有所有权限
-                next();
-                break;
-            case 'manager'://拥有读写权限
-                var reg = /(query|operation|add|del)$/;
-                if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
-                next();
-                break;
-            case 'reviewer'://拥有读的权限
-                var reg = /query$/;
-                if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
-                next();
-                break;
-            default :
-                return res.jsonp({ status: -1, msgBody: '权限不够' });
-                break;
+        //如果过期时间离当前时间不满一小时，则需要重新加密
+        if (parseInt(decode.expires) < parseInt(moment().subtract(1, 'h').format('x'))) {
+            var payload = {
+                user: decode.user,
+                role: decode.role,
+                expires: moment().add(2, 'h').format('x')
+            }
+            jwt.encode(conf.loginSecret, payload, function (err, tokenAgain) {
+                if (err) {
+                    console.error('加密失败');
+                } else {
+                    res.setHeader('x-access-token', tokenAgain);
+                    //3.判断路由权限
+                    routingAuthority(baseUrl, decode.role, res, next);
+                }
+            });
+        } else {
+            //3.判断路由权限
+            routingAuthority(baseUrl, decode.role, res, next);
         }
     })
+}
+
+/**
+ *  判断路由权限
+ *  param baseUrl 路由
+ *  param role 角色
+ *  param res
+ **/
+function routingAuthority(baseUrl, role, res,next) {
+    switch (role) {
+        case 'admin'://管理员账户拥有所有权限
+            next();
+            break;
+        case 'manager'://拥有读写权限
+            var reg = /(query|operation|add|del)$/;
+            if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
+            next();
+            break;
+        case 'reviewer'://拥有读的权限
+            var reg = /query$/;
+            if (!reg.test(baseUrl)) return res.jsonp({ status: -1, msgBody: '权限不够' });
+            next();
+            break;
+        default :
+            return res.jsonp({ status: -1, msgBody: '权限不够' });
+            break;
+    }
 }
