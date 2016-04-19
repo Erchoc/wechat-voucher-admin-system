@@ -1,7 +1,7 @@
 ﻿//配置文件
 module.exports = {
     port: 3002,  //node启动端口
-    dbString: 'mysql://root:123456@139.196.203.14/wechat?pool=true',   //数据库连接字符串
+    dbString: 'mysql://root:123456@139.196.203.14/wechat?pool=true&debug=true',   //数据库连接字符串
     redis: {
         port: 6379,          // Redis port
         host: '139.196.203.14'
@@ -16,6 +16,7 @@ module.exports = {
         '/shop/shopList/query'
     ],
     redirectShop: 'http://139.196.203.14:81/api.html#/?openid={0}', //跳转门店列表地址
+    bot:'http://www.xiaodoubi.com/simsimiapi.php?msg={0}', //人工智能地址
     //微信接口调用地址
     wechatRoute: {
         //获取token地址
@@ -41,5 +42,9 @@ module.exports = {
         getShops: 'https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={0}',
         //code换取openid
         getOpenid: 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx327344267200ed96&secret=d6670eaece059ad1bc12c5a2ea9a4efd&code={0}&grant_type=authorization_code'
+    },
+    //被动回复消息模板
+    passiveTemplate: {
+        text: "<xml><ToUserName><![CDATA[{0}]]></ToUserName><FromUserName><![CDATA[{1}]]></FromUserName><CreateTime>{2}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[{3}]]></Content></xml>"
     }
 }

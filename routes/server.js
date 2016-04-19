@@ -2,12 +2,16 @@
  * 服务器(用来接收微信推送的事件)
  **/
 var Promise = require('bluebird');
+var request = require('request');
 var Fans = require('../lib/fans');
 var fans = new Fans();
 var Consume = require('../lib/consume');
 var consume = new Consume();
 var Coupon = require('../lib/coupon');
 var coupon = new Coupon();
+var Bot = require('../lib/bot');
+var bot = new Bot();
+var conf = require('../config.js');
 module.exports.autoroute = {
     get: {
         '/server/event'  : signature //用于服务器第一次接入认证
@@ -22,7 +26,26 @@ module.exports.autoroute = {
  **/
 function event(req, res) {
     var xmlData = req.body.xml;
+    var resStr = '';
     switch (xmlData.msgtype) {
+        //接收文本消息
+        case 'text':
+            var requestAsync = Promise.promisify(request);
+            //请求人工智能，获得返回的数据
+            requestAsync(conf.bot.format(encodeURIComponent(xmlData.content)))
+            .then(function (msg) {
+                msg = msg.body;
+                resStr = passiveRes('text', xmlData.fromusername, xmlData.tousername, msg);
+                res.send(resStr);
+                var botData = { openid: xmlData.fromusername, msg: xmlData.content, response: msg, time: xmlData.createtime };
+                bot.insert(botData).then(function () { console.log('机器人信息入库成功。') })
+                .catch(function (err) { console.error('机器人信息入库失败:' + err) }); 
+            })
+            .catch(function (err) {
+                console.error(err);
+                res.send('');
+            })
+            break;
         case 'event':
             switch (xmlData.event) {
                 //关注
@@ -62,22 +85,12 @@ function event(req, res) {
                     break;
                     
             }
+            res.send('');
             break;
-        ////地理位置
-        //case 'location':
-        //    fans.updateLocation(xmlData)
-        //    .then(function () { 
-        //        console.log('更新地理位置成功');
-        //    })
-        //    .catch(function (err) { 
-        //        console.error('更新地位位置失败:' + err);
-        //    })
-        //    break;
-                
         default :
             break;
     }
-    res.send('');
+    
 }
 
 
@@ -118,3 +131,21 @@ function checkSignature(signature, timestamp, nonce) {
     }
 }
 exports.signature = signature;
+
+/**
+ * 被动回复
+ * type 消息类型
+ * toUserName 接收者账号
+ * fromUserName 开发者微信号
+ * content 消息内容
+ **/
+function passiveRes(type,toUserName,fromUserName,content) {
+    switch (type) {
+        //被动回复文本消息
+        case 'text':
+            return conf.passiveTemplate.text.format(toUserName, fromUserName, new Date().valueOf(), content);
+            break;
+        default :
+            break;
+    }
+}
